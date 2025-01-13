@@ -6,9 +6,7 @@ export default defineConfig({
   retries: 0, // Number of retries for failed tests
   use: {
     headless: false, // Run in headless mode
-    //baseURL: "https://advancedair-cc.intelisysmaint.ca/", // Base URL for the tests
-    //baseURL: process.env.TEST_URL || 'https://intelisys-soar.intelisysmaint.ca/',
-    baseURL: 'https://intelisys-soar.intelisysmaint.ca/',
+    //baseURL: 'https://intelisys-soar.intelisysmaint.ca/',
     screenshot: "on", // Capture screenshots only on test failure
     video: "retain-on-failure", // Record video on failure
   },

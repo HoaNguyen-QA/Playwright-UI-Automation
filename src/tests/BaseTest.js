@@ -1,36 +1,60 @@
-// Import necessary modules
-import { test as base } from '@playwright/test';
-import GoogleSheetHelper from "../utils/googleSheetHelper.js";
-import dotenv from 'dotenv';
+import { airlinesConfig } from '../../airlines.config';
 
-// Load environment variables
-dotenv.config();
-
-// BaseTest class
-class BaseTest {
+export class BaseTest {
   constructor() {
-    const { GOOGLE_API_KEY, SPREADSHEET_ID } = process.env;
-    this.sheetHelper = new GoogleSheetHelper(GOOGLE_API_KEY, SPREADSHEET_ID);
+    this.airlineName = process.env.AIRLINE;
+    this.environment = process.env.ENVIRONMENT;
+    this.apiKey = process.env.GOOGLE_API_KEY;
+
+    // Check if no value is provided
+    if (!this.airlineName) {
+      throw new Error('AIRLINE variable is required.');
+    }
+
+    if (!this.environment) {
+      throw new Error('ENVIRONMENT variable is required.');
+    }
+
+    // Get airline information from the configuration
+    this.airline = airlinesConfig[this.airlineName];
+    if (!this.airline) {
+      throw new Error(`Airline "${this.airlineName}" not found in the configuration.`);
+    }
+
+    // Build the appropriate URL
+    this.url = this.buildUrl();
   }
 
-  async setupTestData() {
-    // Fetch all necessary data
-    this.bookingDataOneWay = await this.sheetHelper.getOneWayReservationData();
-    this.bookingDataReturn = await this.sheetHelper.getOneWayReservationData();
-    this.adultsPaxInfo = await this.sheetHelper.getAdultsPaxInformation();
-    this.childrenPaxInfo = await this.sheetHelper.getChildrenPaxInformation();
-    this.infantPaxInfo = await this.sheetHelper.getInfantPaxInformation();
-    this.creditCardInfo = await this.sheetHelper.getCreditCardInformation();
+  /**
+   * Build URL based on the base URL of the airline and the environment
+   */
+  buildUrl() {
+    let baseUrl = this.airline.baseUrl;
+    const env = this.environment.toLowerCase();
+  
+    switch (env) {
+      case 'qa':
+        baseUrl = baseUrl.replace('intelisysmaint.ca', 'intelisysqa.ca');
+        break;
+      case 'training':
+        baseUrl = baseUrl.replace('intelisysmaint.ca', 'intelisystraining.ca');
+        break;
+      default:
+        baseUrl;
+    }
+    return baseUrl;
+  }
+  /**
+   * Get the Spreadsheet ID of the airline
+   */
+  getSpreadsheetId() {
+    return this.airline.spreadsheetId;
+  }
+
+  /**
+   * Get the determined URL
+   */
+  getUrl() {
+    return this.url;
   }
 }
-
-// Extend Playwright's test fixture
-const test = base.extend({
-  baseTest: async ({}, use) => {
-    const baseTest = new BaseTest();
-    await baseTest.setupTestData();
-    await use(baseTest);
-  }
-});
-
-export { test };

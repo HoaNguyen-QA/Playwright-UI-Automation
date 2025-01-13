@@ -1,4 +1,3 @@
-// src/pages/BasePage.js
 import logger from "../utils/logger.js";
 
 export default class BasePage {

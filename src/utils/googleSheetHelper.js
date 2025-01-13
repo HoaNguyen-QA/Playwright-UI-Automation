@@ -3,12 +3,12 @@ export default class GoogleSheetHelper {
   constructor(apiKey, spreadsheetId) {
     this.apiKey = apiKey;
     this.spreadsheetId = spreadsheetId;
-    this.ONE_WAY_DATA_SHEET = 'OneWayReservation';
-    this.RETURN_DATA_SHEET = 'ReturnReservation';
-    this.ADULTS_PAX_INFO_SHEET = 'AdultsPassengerInfo';
-    this.CHILDREN_PAX_INFO_SHEET = 'ChildrenPassengerInfo'
-    this.INFANT_PAX_INFO_SHEET ='InfantsPassengerInfo'
-    this.CREDIT_CARD_SHEET = 'CreditCard';
+    this.ONE_WAY_DATA_SHEET = "OneWayReservation";
+    this.RETURN_DATA_SHEET = "ReturnReservation";
+    this.ADULTS_PAX_INFO_SHEET = "AdultsPassengerInfo";
+    this.CHILDREN_PAX_INFO_SHEET = "ChildrenPassengerInfo";
+    this.INFANT_PAX_INFO_SHEET = "InfantsPassengerInfo";
+    this.CREDIT_CARD_SHEET = "CreditCard";
   }
   async getTestData(range) {
     const url = `https://sheets.googleapis.com/v4/spreadsheets/${this.spreadsheetId}/values/${range}?key=${this.apiKey}`;
@@ -34,27 +34,27 @@ export default class GoogleSheetHelper {
     }
   }
 
-  async getOneWayReservationData(){
+  async getOneWayReservationData() {
     return await this.getTestData(this.ONE_WAY_DATA_SHEET);
   }
 
-  async getReturnReservationData(){
+  async getReturnReservationData() {
     return await this.getTestData(this.RETURN_DATA_SHEET);
   }
 
-  async getAdultsPaxInformation(){
+  async getAdultsPaxInformation() {
     return await this.getTestData(this.ADULTS_PAX_INFO_SHEET);
   }
 
-  async getChildrenPaxInformation(){
+  async getChildrenPaxInformation() {
     return await this.getTestData(this.CHILDREN_PAX_INFO_SHEET);
   }
 
-  async getInfantPaxInformation(){
+  async getInfantPaxInformation() {
     return await this.getTestData(this.INFANT_PAX_INFO_SHEET);
   }
 
-  async getCreditCardInformation(){
+  async getCreditCardInformation() {
     return await this.getTestData(this.CREDIT_CARD_SHEET);
   }
 }
