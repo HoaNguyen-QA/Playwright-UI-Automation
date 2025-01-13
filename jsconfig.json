@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "target": "ES6",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "checkJs": true
+  },
+  "include": ["src/**/*.js", "tests/**/*.js"]
+}

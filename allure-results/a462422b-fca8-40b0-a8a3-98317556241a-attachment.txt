@@ -1,0 +1,10 @@
+Filling Adult passenger 1
+Passenger 1 filled successfully
+Filling Adult passenger 2
+Passenger 2 filled successfully
+Filling Child passenger 3
+Child Passenger 3 filled successfully
+Filling Infant passenger 1
+Infant Passenger 1 filled successfully
+Payment details entered successfully
+Booking complete
