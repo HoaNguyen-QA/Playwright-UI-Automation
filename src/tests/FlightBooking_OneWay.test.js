@@ -1,5 +1,6 @@
 // @ts-nocheck
-import { test } from "@playwright/test";
+import { test, expect } from '@playwright/test';
+import { BaseTest } from './BaseTest.js';
 import FlightSearchPage from "../pages/FlightSearchPage.js";
 import verify from "../verify.js";
 import logger from "../utils/logger.js";
@@ -14,15 +15,14 @@ import BookingCompletePage from "../pages/BookingCompletePage.js";
 import HeaderComponent from "../pages/components/HeaderComponent.js";
 import ReviewSelectionsPanel from "../pages/ReviewSelectionsPanel.js";
 dotenv.config();
-
+const baseTest = new BaseTest();
 // Environment variables for secure credentials
-const apiKey = process.env.GOOGLE_API_KEY; // Use environment variables for API key
-const spreadsheetId = process.env.SPREADSHEET_ID; // Use environment variables for spreadsheet ID
-
+const apiKey = baseTest.apiKey; // Use environment variables for API key
+const url = baseTest.getUrl();
+const spreadsheetId = baseTest.getSpreadsheetId();
 // Initialize Google Sheet Helper
 const sheetHelper = new GoogleSheetHelper(apiKey, spreadsheetId);
 const bookingDataOneWay = await sheetHelper.getOneWayReservationData();
-//const bookingDataReturn = await sheetHelper.getReturnReservationData();
 const adultsPaxInfo = await sheetHelper.getAdultsPaxInformation();
 const childrenPaxInfo = await sheetHelper.getChildrenPaxInformation();
 const infantPaxInfo = await sheetHelper.getInfantPaxInformation();
@@ -32,10 +32,12 @@ let pageHeader;
 // Test suite
 test.describe("Flight Booking Tests - One Way", () => {
   // Before each test, initialize the page and logger
-  test.beforeEach(async ({ page, baseURL }, testInfo) => {
+  test.beforeEach(async ({ page }, testInfo) => {
     logger.info(`---------Starting test: ${testInfo.title}--------`);
     await page.setViewportSize({ width: 1536, height: 960 });
-    await page.goto(baseURL);
+    console.log(`Running test for URL: ${url}`);
+    console.log(`Spreadsheet ID: ${spreadsheetId}`);
+    await page.goto(url);
     pageHeader = new HeaderComponent(page);
     await pageHeader.selectLanguage("English");
   });
